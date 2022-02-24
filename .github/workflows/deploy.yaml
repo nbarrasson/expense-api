@@ -54,21 +54,8 @@ jobs:
         with: 
           app-name: ${{ steps.appservice.outputs.webSiteName }}
           package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
-      
-      - name: logout
-        run: |
-          az logout
 
-  # Deploy APIM and resgister the API contract
-  deploy-apim:
-    runs-on: ubuntu-latest
-    needs: [deploy-api]
-    steps:
-      - uses: actions/checkout@main
-      - uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
+      # Deploy APIM
       - name: Deploy APIM
         id: apim
         uses: azure/arm-deploy@v1
@@ -76,7 +63,11 @@ jobs:
           resourceGroupName: ${{ secrets.AZURE_RESOURCEGROUP }}
           template: ./deploy/apim.bicep
           parameters: publisherEmail=${{ secrets.APIM_ADMIN_EMAIL }} publisherName=${{ secrets.APIM_COMPANY_NAME }} location=${{ secrets.AZURE_LOCATION }} serviceUrl='https://${{ steps.appservice.outputs.webSiteName }}.azurewebsites.net'
-
+      
+      - name: logout
+        run: |
+          az logout
+  
   # Scan the API deployed on APIM
   scan-api:
     runs-on: ubuntu-latest
@@ -86,4 +77,4 @@ jobs:
         uses: zaproxy/action-api-scan@v0.1.0
         with:
           format: openapi
-          target: 'https://${{ steps.apim.outputs.swagger_endpoint }}'
+          target: 'https://${{ jobs.deploy-api.steps.appservice.outputs.webSiteName }}.azurewebsites.net/swagger/v1/swagger.json'
