@@ -69,12 +69,8 @@ jobs:
           az logout
   
   # Scan the API deployed on APIM
-  scan-api:
-    runs-on: ubuntu-latest
-    needs: [deploy-apim]
-    steps:      
       - name: ZAP Scan the API
         uses: zaproxy/action-api-scan@v0.1.0
         with:
           format: openapi
-          target: 'https://${{ jobs.deploy-api.steps.appservice.outputs.webSiteName }}.azurewebsites.net/swagger/v1/swagger.json'
+          target: 'https://${{ steps.appservice.outputs.webSiteName }}.azurewebsites.net/swagger/v1/swagger.json'
