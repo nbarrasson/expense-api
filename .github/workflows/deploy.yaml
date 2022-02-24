@@ -62,7 +62,7 @@ jobs:
         with:
           resourceGroupName: ${{ secrets.AZURE_RESOURCEGROUP }}
           template: ./deploy/apim.bicep
-          parameters: publisherEmail=${{ secrets.APIM_ADMIN_EMAIL }} publisherName=${{ secrets.APIM_COMPANY_NAME }} location=${{ secrets.AZURE_LOCATION }} serviceUrl='https://${{ steps.appservice.outputs.webSiteName }}.azurewebsites.net'
+          parameters: publisherEmail=${{ secrets.APIM_ADMIN_EMAIL }} publisherName=${{ secrets.APIM_COMPANY_NAME }} location=${{ secrets.AZURE_LOCATION }}
       
       - name: logout
         run: |
