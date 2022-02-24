@@ -14,8 +14,8 @@ namespace ExpenseManagement.DB;
    private static List<Expense> _expenses = new List<Expense>()
    {
      new Expense{ Id=1, EmployeeId=6554, Amount=1542.45, Currency="euro", Description="Travel to Redmond" },
-     new Expense{ Id=2, EmployeeId=6554, Amount=1542.45, Currency="euro", Description="Travel to Redmond" },
-     new Expense{ Id=3, EmployeeId=6554, Amount=1542.45, Currency="euro", Description="Travel to Redmond" }     
+     new Expense{ Id=2, EmployeeId=5489, Amount=120.60, Currency="dollar", Description="Restaurant with customer" },
+     new Expense{ Id=3, EmployeeId=1258, Amount=800.90, Currency="euro", Description="Travel to London" }     
    };
 
    public static List<Expense> GetExpenses() 
