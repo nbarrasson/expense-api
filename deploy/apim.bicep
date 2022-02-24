@@ -18,7 +18,7 @@ resource apim 'Microsoft.ApiManagement/service@2020-12-01' = {
   name: apimName
   location: location
   sku:{
-    capacity: 1
+    capacity: 0
     name: 'Consumption'
   }
   properties:{
