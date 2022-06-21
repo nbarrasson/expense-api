@@ -67,10 +67,3 @@ jobs:
       - name: logout
         run: |
           az logout
-  
-  # Scan the API deployed on APIM
-      - name: ZAP Scan the API
-        uses: zaproxy/action-api-scan@v0.1.0
-        with:
-          format: openapi
-          target: 'https://${{ steps.appservice.outputs.webSiteName }}.azurewebsites.net/swagger/v1/swagger.json'

@@ -5,7 +5,7 @@ namespace ExpenseManagement.DB;
    public int Id { get; init; }
    public int EmployeeId { get; set; }
    public double Amount { get; set; }
-   public string Currency {get; set; } = default!;
+   public string ? Currency {get; set; }
    public string ? Description { get; set; }
  }
 
@@ -20,38 +20,45 @@ namespace ExpenseManagement.DB;
 
    public static List<Expense> GetExpenses() 
    {
+    // Return a copy of the list
      return _expenses;
    } 
 
    public static Expense ? GetExpense(int id) 
    {
-     return _expenses.SingleOrDefault(Expense => Expense.Id == id);
+    // Return the expense with the given id or null if not found
+    return _expenses.FirstOrDefault(Expense => Expense.Id == id);
    } 
 
-   public static Expense CreateExpense(Expense Expense) 
+   public static Expense CreateExpense(Expense expense) 
    {
-     _expenses.Add(Expense);
-     return Expense;
-   }
-
+    // Add the expense if it doesn't already exist otherwise throw an exception
+    if (_expenses.Any(Expense => Expense.Id == expense.Id))
+    {
+      throw new Exception("Expense already exists");
+    }
+    _expenses.Add(expense);
+    return expense;
+    }
+    
    public static Expense UpdateExpense(Expense update) 
    {
-     _expenses = _expenses.Select(Expense =>
-     {
-       if (Expense.Id == update.Id)
-       {
-         Expense.EmployeeId = update.EmployeeId;
-         Expense.Amount = update.Amount;
-         Expense.Currency = update.Currency;
-         Expense.Description = update.Description;
-       }
-       return Expense;
-     }).ToList();
-     return update;
-   }
-
+    // Update the expense with the given id if it exists otherwise throw an exception
+    var expense = _expenses.FirstOrDefault(Expense => Expense.Id == update.Id);
+    if (expense == null)
+    {
+      throw new Exception("Expense not found");
+    }
+    expense.EmployeeId = update.EmployeeId;
+    expense.Amount = update.Amount;
+    expense.Currency = update.Currency;
+    expense.Description = update.Description;
+    return expense;
+    }
+    
    public static void RemoveExpense(int id)
    {
-     _expenses = _expenses.FindAll(Expense => Expense.Id == id).ToList();
+    // Remove the Expense
+    _expenses = _expenses.Where(Expense => Expense.Id != id).ToList();
    }
  }
