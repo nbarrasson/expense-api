@@ -2,7 +2,7 @@ namespace ExpenseManagement.DB;
 
  public record Expense 
  {
-   public int Id { get; set; }
+   public int Id { get; init; }
    public int EmployeeId { get; set; }
    public double Amount { get; set; }
    public string Currency {get; set; } = default!;
